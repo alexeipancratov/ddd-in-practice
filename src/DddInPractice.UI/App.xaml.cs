@@ -4,7 +4,7 @@
     {
         public App()
         {
-            //Initer.Init(@"Server=.;Database=DddInPractice;Trusted_Connection=true");
+            Initer.Init(@"Server=.;Database=DddInPractice;Trusted_Connection=true");
         }
     }
 }

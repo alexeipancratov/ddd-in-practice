@@ -50,6 +50,15 @@ namespace DddInPractice.UI
         private void BuySnack()
         {
             _snackMachine.BuySnack();
+            using (ISession session = SessionFactory.OpenSession())
+            {
+                // Just a good practice, even though it's just one object.
+                using (ITransaction transaction = session.BeginTransaction())
+                {
+                    session.SaveOrUpdate(_snackMachine);
+                    transaction.Commit();
+                }
+            }
             NotifyClient("You have bought a snack");
         }
 
