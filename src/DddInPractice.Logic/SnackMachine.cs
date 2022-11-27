@@ -4,6 +4,9 @@ using static DddInPractice.Logic.Money;
 
 namespace DddInPractice.Logic;
 
+// To be able to use this entity with NHibernate we had to remove "sealed"
+// and add "virtual" for all its public members. Also we had to make setters as protected.
+// But it's a fair trade-off.
 public class SnackMachine : Entity
 {
     public virtual Money MoneyInside { get; protected set; } = None;

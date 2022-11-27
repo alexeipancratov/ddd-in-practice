@@ -2,6 +2,7 @@
 
 namespace DddInPractice.Logic;
 
+// DB: Value objects should be stored inside of the parent entity object.
 public sealed class Money : ValueObject<Money>
 {
     public static readonly Money None = new Money(0, 0, 0, 0, 0, 0);
