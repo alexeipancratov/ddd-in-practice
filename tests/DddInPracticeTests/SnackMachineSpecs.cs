@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using DddInPractice.Logic;
 using FluentAssertions;
 using Xunit;
@@ -45,15 +46,20 @@ public class SnackMachineSpecs
     }
 
     [Fact]
-    public void Money_in_transaction_goes_to_money_inside_after_purchase()
+    public void BuySnack_trades_inserted_money_for_a_snack()
     {
+        // Arrange
+        const int slotPosition = 1;
         var snackMachine = new SnackMachine();
-        snackMachine.InsertMoney(Dollar);
+        snackMachine.LoadSnacks(slotPosition, new SnackPile(new Snack("Some snack"), 10, 1m));
         snackMachine.InsertMoney(Dollar);
         
-        snackMachine.BuySnack();
+        // Act
+        snackMachine.BuySnack(slotPosition);
 
+        // Assert
         snackMachine.MoneyInTransaction.Should().Be(None);
-        snackMachine.MoneyInside.Should().Be(2m);
+        snackMachine.MoneyInside.Should().Be(Dollar);
+        snackMachine.GetSnackPile(1).Quantity.Should().Be(9); // we could've retrieved the same from the .Slots
     }
 }
