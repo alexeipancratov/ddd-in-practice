@@ -67,7 +67,7 @@ public sealed class Money : ValueObject<Money>
         TwentyDollarCount = twentyDollarCount;
     }
 
-    public static Money operator +(Money money1, Money money2) => new Money(
+    public static Money operator +(Money money1, Money money2) => new(
         money1.OneCentCount + money2.OneCentCount,
         money1.TenCentCount + money2.TenCentCount,
         money1.QuarterCount + money2.QuarterCount,
@@ -75,17 +75,24 @@ public sealed class Money : ValueObject<Money>
         money1.FiveDollarCount + money2.FiveDollarCount,
         money1.TwentyDollarCount + money2.TwentyDollarCount);
 
-    public static Money operator -(Money money1, Money money2)
-    {
-        return new Money(
+    public static Money operator -(Money money1, Money money2) =>
+        new(
             money1.OneCentCount - money2.OneCentCount,
             money1.TenCentCount - money2.TenCentCount,
             money1.QuarterCount - money2.QuarterCount,
             money1.OneDollarCount - money2.OneDollarCount,
             money1.FiveDollarCount - money2.FiveDollarCount,
             money1.TwentyDollarCount - money2.TwentyDollarCount);
-    }
-    
+
+    public static Money operator *(Money money1, int multiplier) =>
+        new(
+            money1.OneCentCount * multiplier,
+            money1.TenCentCount * multiplier,
+            money1.QuarterCount * multiplier,
+            money1.OneDollarCount * multiplier,
+            money1.FiveDollarCount * multiplier,
+            money1.TwentyDollarCount * multiplier);
+
     protected override bool EqualsCore(Money other)
     {
         return OneCentCount == other.OneCentCount
@@ -119,5 +126,39 @@ public sealed class Money : ValueObject<Money>
         }
 
         return "$" + Amount.ToString("0.00");
+    }
+
+    /// <summary>
+    /// Calculates a new <see cref="Money"/> instance which corresponds to the <paramref name="amount"/>
+    /// using the highest possible bills/coins ($20 down to 1 cent).
+    /// </summary>
+    /// <param name="amount">The target amount of money.</param>
+    /// <returns>A new <see cref="Money"/> instance which corresponds to the <paramref name="amount"/></returns>
+    public Money CalculateMoneyBasedOnAmount(decimal amount)
+    {
+        int twentyDollarCount = Math.Min((int)(amount / 20), TwentyDollarCount);
+        amount -= twentyDollarCount * 20;
+        
+        int fiveDollarCount = Math.Min((int)(amount / 5), FiveDollarCount);
+        amount -= fiveDollarCount * 5;
+        
+        int oneDollarCount = Math.Min((int)amount, OneDollarCount);
+        amount -= oneDollarCount;
+        
+        int quarterCount = Math.Min((int)(amount / 0.25m), QuarterCount);
+        amount -= quarterCount * 0.25m;
+        
+        int tenCentCount = Math.Min((int)(amount / 0.1m), TenCentCount);
+        amount -= tenCentCount * 0.1m;
+
+        int oneCentCount = Math.Min((int)(amount / 0.01m), OneCentCount);
+
+        return new Money(
+            oneCentCount,
+            tenCentCount,
+            quarterCount,
+            oneDollarCount,
+            fiveDollarCount,
+            twentyDollarCount);
     }
 }
