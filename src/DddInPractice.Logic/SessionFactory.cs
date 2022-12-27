@@ -37,7 +37,7 @@ namespace DddInPractice.Logic
                     .Conventions.Add<TableNameConvention>()
                     .Conventions.Add<HiLoConvention>()
                 );
-                //.ExposeConfiguration(cfg => new SchemaExport(cfg).Execute(true, true, false));
+            //.ExposeConfiguration(cfg => new SchemaExport(cfg).Execute(true, true, false)); // Recreate DB
 
             return configuration.BuildSessionFactory();
         }

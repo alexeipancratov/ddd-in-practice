@@ -15,6 +15,6 @@ public class Slot : Entity
     {
         SnackMachine = snackMachine;
         Position = position;
-        SnackPile = new SnackPile(null, 0, 0m);
+        SnackPile = SnackPile.Empty;
     }
 }

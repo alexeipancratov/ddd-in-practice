@@ -1,4 +1,5 @@
-﻿using FluentNHibernate.Mapping;
+﻿using FluentNHibernate;
+using FluentNHibernate.Mapping;
 
 namespace DddInPractice.Logic;
 
@@ -18,5 +19,11 @@ public class SnackMachineMap : ClassMap<SnackMachine>
             cm.Map(m => m.FiveDollarCount);
             cm.Map(m => m.TwentyDollarCount);
         });
+        
+        // We use Reveal because Slots in SnackMachine is protected and thus cannot be accessed directly.
+        HasMany<Slot>(Reveal.Member<SnackMachine>("Slots"))
+            .Cascade.SaveUpdate()
+            .Not.LazyLoad()
+            .Inverse();
     }
 }

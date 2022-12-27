@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Linq;
 using DddInPractice.Logic;
 using FluentAssertions;
 using Xunit;
 using static DddInPractice.Logic.Money;
+using static DddInPractice.Logic.Snack;
 
 namespace DddInPracticeTests;
 
@@ -51,7 +51,7 @@ public class SnackMachineSpecs
         // Arrange
         const int slotPosition = 1;
         var snackMachine = new SnackMachine();
-        snackMachine.LoadSnacks(slotPosition, new SnackPile(new Snack("Some snack"), 10, 1m));
+        snackMachine.LoadSnacks(slotPosition, new SnackPile(Chocolate, 10, 1m));
         snackMachine.InsertMoney(Dollar);
         
         // Act
@@ -84,7 +84,7 @@ public class SnackMachineSpecs
     {
         // Arrange
         var snackMachine = new SnackMachine();
-        snackMachine.LoadSnacks(1, new SnackPile(new Snack("Some snack"), 1, price: 0.5m));
+        snackMachine.LoadSnacks(1, new SnackPile(Chocolate, 1, price: 0.5m));
         snackMachine.LoadMoney(TenCent * 10);
         
         // Act
@@ -101,7 +101,7 @@ public class SnackMachineSpecs
     {
         // Arrange
         var snackMachine = new SnackMachine();
-        snackMachine.LoadSnacks(1, new SnackPile(new Snack("Some snack"), 1, price: 0.5m));
+        snackMachine.LoadSnacks(1, new SnackPile(Chocolate, 1, price: 0.5m));
         snackMachine.InsertMoney(Dollar);
         
         // Act

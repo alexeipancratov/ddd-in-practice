@@ -1,6 +1,6 @@
 ﻿using DddInPractice.Logic;
-using NHibernate;
 using Xunit;
+using static DddInPractice.Logic.Money;
 
 namespace DddInPracticeTests;
 
@@ -11,10 +11,12 @@ public class TemporaryTests
     {
         SessionFactory.Init("Server=.;Database=DddInPractice;Trusted_Connection=true");
 
-        using (ISession session = SessionFactory.OpenSession())
-        {
-            long id = 1;
-            var snackMachine = session.Get<SnackMachine>(id);
-        }
+        var repository = new SnackMachineRepository();
+        var snackMachine = repository.GetById(1);
+        snackMachine.InsertMoney(Dollar);
+        snackMachine.InsertMoney(Dollar);
+        snackMachine.InsertMoney(Dollar);
+        snackMachine.BuySnack(1);
+        repository.Save(snackMachine);
     }
 }

@@ -127,14 +127,38 @@ public sealed class Money : ValueObject<Money>
 
         return "$" + Amount.ToString("0.00");
     }
+    
+    /// <summary>
+    /// Verifies if it's possible to calculate a new <see cref="Money"/> instance which corresponds to the <paramref name="amount"/>
+    /// using the highest possible bills/coins ($20 down to 1 cent).
+    /// </summary>
+    /// <param name="amount">Amount to be checked against.</param>
+    /// <returns>True, if there's enough bills/coins to match <paramref name="amount"/>. False - otherwise.</returns>
+    public bool CanCalculateMoneyUsingHighestBillsOrCoinsBasedOnAmount(decimal amount)
+    {
+        Money money = CalculateMoneyUsingHighestBillsOrCoinsBasedOnAmountCore(amount);
+        return money.Amount == amount;
+    }
 
     /// <summary>
     /// Calculates a new <see cref="Money"/> instance which corresponds to the <paramref name="amount"/>
     /// using the highest possible bills/coins ($20 down to 1 cent).
     /// </summary>
+    /// <remarks>Is a useful logic because it's preferable to have lower-denominated bills
+    /// in the machine for change.</remarks>
     /// <param name="amount">The target amount of money.</param>
     /// <returns>A new <see cref="Money"/> instance which corresponds to the <paramref name="amount"/></returns>
-    public Money CalculateMoneyBasedOnAmount(decimal amount)
+    public Money CalculateMoneyUsingHighestBillsOrCoinsBasedOnAmount(decimal amount)
+    {
+        if (!CanCalculateMoneyUsingHighestBillsOrCoinsBasedOnAmount(amount))
+        {
+            throw new InvalidOperationException();
+        }
+
+        return CalculateMoneyUsingHighestBillsOrCoinsBasedOnAmountCore(amount);
+    }
+    
+    private Money CalculateMoneyUsingHighestBillsOrCoinsBasedOnAmountCore(decimal amount)
     {
         int twentyDollarCount = Math.Min((int)(amount / 20), TwentyDollarCount);
         amount -= twentyDollarCount * 20;

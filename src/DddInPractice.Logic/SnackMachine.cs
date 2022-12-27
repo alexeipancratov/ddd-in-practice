@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using static DddInPractice.Logic.Money;
 
@@ -17,7 +18,7 @@ public class SnackMachine : AggregateRoot
     /// </summary>
     public virtual decimal MoneyInTransaction { get; protected set; }
 
-    protected virtual Slot[] Slots { get; set; }
+    protected virtual ICollection<Slot> Slots { get; set; }
 
     public SnackMachine()
     {
@@ -34,6 +35,16 @@ public class SnackMachine : AggregateRoot
     public virtual SnackPile GetSnackPile(int position)
     {
         return GetSlot(position).SnackPile;
+    }
+
+    // NOTE: Just as in GetSnackPile, we return a collection of value objects,
+    // and not a collection of internal entities. So we still maintain aggregate's encapsulation.
+    public virtual IReadOnlyList<SnackPile> GetAllSnackPiles()
+    {
+        return Slots
+            .OrderBy(s => s.Position)
+            .Select(s => s.SnackPile)
+            .ToList();
     }
 
     private Slot GetSlot(int position)
@@ -57,25 +68,44 @@ public class SnackMachine : AggregateRoot
 
     public virtual void ReturnMoney()
     {
-        Money moneyToReturn = MoneyInside.CalculateMoneyBasedOnAmount(MoneyInTransaction);
+        Money moneyToReturn = MoneyInside.CalculateMoneyUsingHighestBillsOrCoinsBasedOnAmount(MoneyInTransaction);
         MoneyInside -= moneyToReturn;
         MoneyInTransaction = 0;
     }
 
+    public virtual string CanBuySnack(int position)
+    {
+        SnackPile snackPile = GetSnackPile(position);
+
+        if (snackPile.Quantity == 0)
+        {
+            return "The snack pile is empty";
+        }
+
+        if (MoneyInTransaction < snackPile.Price)
+        {
+            return "Not enough money";
+        }
+
+        if (!MoneyInside.CanCalculateMoneyUsingHighestBillsOrCoinsBasedOnAmount(MoneyInTransaction - snackPile.Price))
+        {
+            return "Not enough change";
+        }
+
+        return string.Empty;
+    }
+
     public virtual void BuySnack(int position)
     {
-        Slot slot = GetSlot(position);
-        if (slot.SnackPile.Price > MoneyInTransaction)
-        {
-            throw new InvalidOperationException("Not enough money.");
-        }
-        slot.SnackPile = slot.SnackPile.SubtractOne();
-        
-        Money change = MoneyInside.CalculateMoneyBasedOnAmount(MoneyInTransaction - slot.SnackPile.Price);
-        if (change.Amount < MoneyInTransaction - slot.SnackPile.Price)
+        if (CanBuySnack(position) != string.Empty)
         {
             throw new InvalidOperationException();
         }
+        
+        Slot slot = GetSlot(position);
+        slot.SnackPile = slot.SnackPile.SubtractOne();
+        
+        Money change = MoneyInside.CalculateMoneyUsingHighestBillsOrCoinsBasedOnAmount(MoneyInTransaction - slot.SnackPile.Price);
         MoneyInside -= change;
         MoneyInTransaction = 0;
     }
