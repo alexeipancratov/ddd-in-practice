@@ -1,6 +1,8 @@
 ﻿using DddInPractice.Logic;
+using DddInPractice.Logic.SnackMachines;
+using DddInPractice.Logic.Utils;
 using Xunit;
-using static DddInPractice.Logic.Money;
+using static DddInPractice.Logic.SharedKernel.Money;
 
 namespace DddInPracticeTests;
 

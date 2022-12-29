@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using static DddInPractice.Logic.Money;
+using DddInPractice.Logic.Common;
+using DddInPractice.Logic.SharedKernel;
+using static DddInPractice.Logic.SharedKernel.Money;
 
-namespace DddInPractice.Logic;
+namespace DddInPractice.Logic.SnackMachines;
 
 // To be able to use this entity with NHibernate we had to remove "sealed"
 // and add "virtual" for all its public members. Also we had to make setters as protected.

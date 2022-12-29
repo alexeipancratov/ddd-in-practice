@@ -1,7 +1,7 @@
 ﻿using System;
 using NHibernate.Proxy;
 
-namespace DddInPractice.Logic;
+namespace DddInPractice.Logic.Common;
 
 /* By having a base abstact class we can define the comparison logic in a single place
  * and to write logic of setting the ID in a single place.

@@ -1,6 +1,7 @@
 using DddInPractice.Logic;
 using FluentAssertions;
 using System;
+using DddInPractice.Logic.SharedKernel;
 using Xunit;
 
 namespace DddInPracticeTests;
@@ -130,8 +131,8 @@ public class MoneySpecs
     }
 
     [Theory]
-    [InlineData(1, 0, 0, 0, 0, 0, "¢1")]
-    [InlineData(0, 1, 0, 0, 0, 0, "¢10")]
+    [InlineData(1, 0, 0, 0, 0, 0, "ï¿½1")]
+    [InlineData(0, 1, 0, 0, 0, 0, "ï¿½10")]
     [InlineData(0, 0, 0, 1, 0, 0, "$1.00")]
     [InlineData(1, 0, 0, 1, 0, 0, "$1.01")]
     [InlineData(0, 0, 2, 1, 0, 0, "$1.50")]

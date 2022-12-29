@@ -1,4 +1,4 @@
-﻿namespace DddInPractice.Logic;
+﻿namespace DddInPractice.Logic.Common;
 
 // Could use struct, but since it doesn't support inheritance, we would need to 
 // overload operators in each struct. Also they don't work quite well with ORMs.

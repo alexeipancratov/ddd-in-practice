@@ -6,9 +6,8 @@ using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Helpers;
 using FluentNHibernate.Conventions.Instances;
 using NHibernate;
-using NHibernate.Tool.hbm2ddl;
 
-namespace DddInPractice.Logic
+namespace DddInPractice.Logic.Utils
 {
     public static class SessionFactory
     {

@@ -1,6 +1,7 @@
 ﻿using System;
+using DddInPractice.Logic.Common;
 
-namespace DddInPractice.Logic;
+namespace DddInPractice.Logic.SharedKernel;
 
 // DB: Value objects should be stored inside of the parent entity object.
 public sealed class Money : ValueObject<Money>

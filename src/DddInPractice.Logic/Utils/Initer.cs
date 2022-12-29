@@ -1,4 +1,4 @@
-﻿namespace DddInPractice.Logic
+﻿namespace DddInPractice.Logic.Utils
 {
     // Decoupling between UI and utility classes.
     public static class Initer

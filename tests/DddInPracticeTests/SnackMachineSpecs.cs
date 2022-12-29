@@ -1,9 +1,10 @@
 ﻿using System;
 using DddInPractice.Logic;
+using DddInPractice.Logic.SnackMachines;
 using FluentAssertions;
 using Xunit;
-using static DddInPractice.Logic.Money;
-using static DddInPractice.Logic.Snack;
+using static DddInPractice.Logic.SharedKernel.Money;
+using static DddInPractice.Logic.SnackMachines.Snack;
 
 namespace DddInPracticeTests;
 

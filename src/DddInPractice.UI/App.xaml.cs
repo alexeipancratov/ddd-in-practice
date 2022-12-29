@@ -1,4 +1,6 @@
-﻿namespace DddInPractice.Logic.UI
+﻿using DddInPractice.Logic.Utils;
+
+namespace DddInPractice.Logic.UI
 {
     public partial class App
     {
