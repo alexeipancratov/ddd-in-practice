@@ -1,5 +1,5 @@
-﻿using DddInPractice.Logic.SnackMachines;
-using DddInPractice.UI.SnackMachines;
+﻿using DddInPractice.Logic.Atms;
+using DddInPractice.UI.Atms;
 
 namespace DddInPractice.UI.Common
 {
@@ -7,8 +7,8 @@ namespace DddInPractice.UI.Common
     {
         public MainViewModel()
         {
-            SnackMachine snackMachine = new SnackMachineRepository().GetById(1);
-            var viewModel = new SnackMachineViewModel(snackMachine);
+            Atm atm = new AtmRepository().GetById(1);
+            var viewModel = new AtmViewModel(atm);
             _dialogService.ShowDialog(viewModel);
         }
     }

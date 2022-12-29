@@ -1,9 +1,10 @@
 using System;
 using System.Windows;
 using System.Windows.Media;
+using DddInPractice.Logic;
 using DddInPractice.Logic.SnackMachines;
 
-namespace DddInPractice.UI.SnackMachines
+namespace DddInPractice.UI
 {
     public class SnackPileViewModel
     {
