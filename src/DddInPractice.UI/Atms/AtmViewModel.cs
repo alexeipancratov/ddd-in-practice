@@ -27,11 +27,11 @@ namespace DddInPractice.UI.Atms
         public string MoneyCharged => _atm.MoneyCharged.ToString("C2");
         public Command<decimal> TakeMoneyCommand { get; private set; }
 
-        public AtmViewModel(Atm atm, AtmRepository atmRepository, PaymentGateway paymentGateway)
+        public AtmViewModel(Atm atm)
         {
             _atm = atm;
-            _atmRepository = atmRepository;
-            _paymentGateway = paymentGateway;
+            _atmRepository = new AtmRepository();
+            _paymentGateway = new PaymentGateway();
 
             TakeMoneyCommand = new Command<decimal>(x => x > 0, TakeMoney);
         }
