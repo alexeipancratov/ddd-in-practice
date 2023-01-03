@@ -123,4 +123,15 @@ public class SnackMachine : AggregateRoot
     {
         MoneyInside += money;
     }
+
+    public virtual Money UnloadMoney()
+    {
+        if (MoneyInTransaction > 0)
+            throw new InvalidOperationException("Cannot cash out snack machine while in transaction with a customer");
+        
+        var moneyToReturn = MoneyInside;
+        MoneyInside = Money.None;
+
+        return moneyToReturn;
+    }
 }

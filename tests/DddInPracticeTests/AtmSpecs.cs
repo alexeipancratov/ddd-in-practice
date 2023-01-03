@@ -1,4 +1,6 @@
-﻿using DddInPractice.Logic.Atms;
+﻿using System.Linq;
+using DddInPractice.Logic.Atms;
+using DddInPractice.Logic.Common;
 using FluentAssertions;
 using Xunit;
 using static DddInPractice.Logic.SharedKernel.Money;
@@ -38,6 +40,29 @@ public class AtmSpecs
         
         atm.TakeMoney(1.1m);
 
-        atm.MoneyCharged.Should().Be(1.12m); // two cent for commission
+        atm.MoneyCharged.Should().Be(1.12m); // two cents for commission
+    }
+
+    [Fact]
+    public void Take_money_raises_an_event()
+    {
+        var atm = new Atm();
+        atm.LoadMoney(Dollar);
+        
+        atm.TakeMoney(1m);
+        
+        atm.ShouldContainBalanceChangedEventWithDelta(1.01m);
+    }
+}
+
+internal static class AtmExtensions
+{
+    public static void ShouldContainBalanceChangedEventWithDelta(this Atm atm, decimal delta)
+    {
+        var domainEvent =
+            (BalanceChangedEvent)atm.DomainEvents.SingleOrDefault(e => e.GetType() == typeof(BalanceChangedEvent));
+
+        domainEvent.Should().NotBeNull();
+        domainEvent.Delta.Should().Be(delta);
     }
 }

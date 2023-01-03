@@ -1,15 +1,14 @@
-﻿using DddInPractice.Logic.Atms;
-using DddInPractice.UI.Atms;
+﻿using DddInPractice.UI.Management;
 
 namespace DddInPractice.UI.Common
 {
     public class MainViewModel : ViewModel
     {
+        public DashboardViewModel Dashboard { get; private set; }
+
         public MainViewModel()
         {
-            Atm atm = new AtmRepository().GetById(1);
-            var viewModel = new AtmViewModel(atm);
-            _dialogService.ShowDialog(viewModel);
+            Dashboard = new DashboardViewModel();
         }
     }
 }

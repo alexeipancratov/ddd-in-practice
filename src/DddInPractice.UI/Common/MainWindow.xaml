@@ -4,6 +4,6 @@
         Title="DDD in Practice" Height="550" Width="725"
         Icon="{StaticResource imgApplicationIcon}">
     <Grid>
-        
+        <ContentPresenter Content="{Binding Path=Dashboard}" ContentTemplate="{StaticResource DashboardViewModel}" />
     </Grid>
 </Window>

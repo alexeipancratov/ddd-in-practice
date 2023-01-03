@@ -1,5 +1,5 @@
-﻿using System;
-using DddInPractice.Logic.Atms;
+﻿using DddInPractice.Logic.Atms;
+using DddInPractice.Logic.Management;
 using DddInPractice.Logic.SharedKernel;
 using DddInPractice.UI.Common;
 
@@ -7,9 +7,9 @@ namespace DddInPractice.UI.Atms
 {
     public class AtmViewModel : ViewModel
     {
-        private readonly Atm _atm;
-        private readonly AtmRepository _atmRepository;
         private readonly PaymentGateway _paymentGateway;
+        private readonly AtmRepository _repository;
+        private readonly Atm _atm;
 
         private string _message;
         public string Message
@@ -30,7 +30,7 @@ namespace DddInPractice.UI.Atms
         public AtmViewModel(Atm atm)
         {
             _atm = atm;
-            _atmRepository = new AtmRepository();
+            _repository = new AtmRepository();
             _paymentGateway = new PaymentGateway();
 
             TakeMoneyCommand = new Command<decimal>(x => x > 0, TakeMoney);
@@ -38,8 +38,7 @@ namespace DddInPractice.UI.Atms
 
         private void TakeMoney(decimal amount)
         {
-            var error = _atm.CanTakeMoney(amount);
-            
+            string error = _atm.CanTakeMoney(amount);
             if (error != string.Empty)
             {
                 NotifyClient(error);
@@ -49,8 +48,8 @@ namespace DddInPractice.UI.Atms
             decimal amountWithCommission = _atm.CalculateAmountWithCommission(amount);
             _paymentGateway.ChargePayment(amountWithCommission);
             _atm.TakeMoney(amount);
-            _atmRepository.Save(_atm);
-            
+            _repository.Save(_atm);
+
             NotifyClient("You have taken " + amount.ToString("C2"));
         }
 

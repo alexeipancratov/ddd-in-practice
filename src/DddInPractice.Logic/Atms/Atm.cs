@@ -37,6 +37,8 @@ public class Atm : AggregateRoot
 
         decimal amountWithCommission = CalculateAmountWithCommission(amount);
         MoneyCharged += amountWithCommission;
+        
+        AddDomainEvent(new BalanceChangedEvent(amountWithCommission));
     }
 
     public virtual decimal CalculateAmountWithCommission(decimal amount)
